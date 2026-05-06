@@ -1,48 +1,64 @@
-const likeBtn = document.querySelector(".likeBtn");
-const dislikeBtn = document.querySelector(".dislikeBtn");
-const countSpan = document.querySelector(".likeCount");
+//=== ESTADO (dados da aplicação) === 
 
-let count = 0;
-let liked = false;
-let disliked = false;
+let likeCount = 0;
+let dislikeCount = 0;
+let curtido = false;
+let descurtido = false;
 
-likeBtn.addEventListener("click", function() {
+//=== SERVICE (regras de negócio) === 
 
-  if (!liked) {
-    liked = true;
-    likeBtn.classList.add("liked");
-    count++;
+function curtir() {
+  if (curtido == false){
+    likeCount++;
+    curtido = true;
+    document.getElementById("likeCount").innerText = likeCount;
 
-    if (disliked) {
-      disliked = false;
-      dislikeBtn.classList.remove("disliked");
+    if(descurtido == true){
+      dislikeCount--;
+      descurtido = false;
+      document.getElementById("dislikeCount").innerText = dislikeCount;
+
     }
 
-  } else {
-    liked = false;
-    likeBtn.classList.remove("liked");
-    count--;
+  }else{
+    likeCount--;
+    curtido = false;
+    document.getElementById("likeCount").innerText = likeCount;
   }
 
-  countSpan.textContent = count;
-});
+}
 
-dislikeBtn.addEventListener("click", function() {
+function descurtir() {
+  if(descurtido == false){
+    dislikeCount++;
+    descurtido = true;
+    document.getElementById("dislikeCount").innerText = dislikeCount;
 
-  if (!disliked) {
-    disliked = true;
-    dislikeBtn.classList.add("disliked");
-
-    if (liked) {
-      liked = false;
-      likeBtn.classList.remove("liked");
-      count--;
+    if(curtido == true){
+      likeCount--;
+      curtido = false;
+      document.getElementById("likeCount").innerText = likeCount;
     }
 
-  } else {
-    disliked = false;
-    dislikeBtn.classList.remove("disliked");
   }
+  else{
+    dislikeCount--;
+    descurtido = false;
+    document.getElementById("dislikeCount").innerText = dislikeCount;
+  }
+}
 
-  countSpan.textContent = count;
-});
+// === CONTROLLER (intermediação)===
+
+function clicarCurtir(){
+   curtir();
+
+}
+function clicarDescurtir(){
+   descurtir();
+}
+
+// === EVENTOS ===
+
+document.getElementById("likeBtn").addEventListener("click", clicarCurtir);
+document.getElementById("dislikeBtn").addEventListener("click", clicarDescurtir);
